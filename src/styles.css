@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+/* src/styles.css · Estilos globales */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* En los componentes MDC de Material la clase es .mat-mdc-form-field */
+.mat-mdc-form-field {
+  margin-bottom: 15px;
+}

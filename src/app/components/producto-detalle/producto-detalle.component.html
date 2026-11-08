@@ -1,0 +1,44 @@
+<!-- src/app/components/producto-detalle/producto-detalle.component.html -->
+<div class="container mt-4">
+  @if (currentProducto(); as producto) {
+    <h4>Producto #{{ producto.id }}</h4>
+
+    <form>
+      <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="nombre" name="nombre"
+               [(ngModel)]="producto.nombre" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="descripcion" class="form-label">Descripción</label>
+        <textarea class="form-control" id="descripcion" name="descripcion" rows="3"
+                  [(ngModel)]="producto.descripcion"></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="precio" class="form-label">Precio (€)</label>
+        <input type="number" class="form-control" id="precio" name="precio"
+               step="0.01" min="0" [(ngModel)]="producto.precio" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="stock" class="form-label">Stock</label>
+        <input type="number" class="form-control" id="stock" name="stock"
+               min="0" [(ngModel)]="producto.stock" required>
+      </div>
+
+      <div class="d-flex gap-2">
+        <button matButton="elevated" color="primary" type="button" (click)="actualizarProducto()">Actualizar</button>
+        <button matButton="elevated" color="warn" type="button" (click)="eliminarProducto()">Eliminar</button>
+        <a matButton routerLink="/productos">Volver</a>
+      </div>
+    </form>
+  } @else if (message()) {
+    <div class="alert alert-warning">{{ message() }}</div>
+    <a matButton routerLink="/productos">Volver a la lista</a>
+  } @else {
+    <p>Cargando producto…</p>
+  }
+</div>
+

@@ -1,0 +1,28 @@
+<!-- src/app/components/api-test/api-test.component.html -->
+<div class="container mt-4">
+  <h2>Banco de pruebas de la API</h2>
+  <p class="text-muted">Página temporal: se elimina al terminar el Paso 6.</p>
+
+  <h6>Lectura</h6>
+  <div class="d-flex flex-wrap gap-2 mb-3">
+    <button type="button" class="btn btn-outline-primary" (click)="listar()">Listar</button>
+    <button type="button" class="btn btn-outline-primary" (click)="obtener(3)">Obtener 3</button>
+    <button type="button" class="btn btn-outline-danger" (click)="obtener(999)">Obtener 999</button>
+    <button type="button" class="btn btn-outline-primary" (click)="buscar('sony')">Buscar «sony»</button>
+    <button type="button" class="btn btn-outline-primary" (click)="buscar('Mecánico')">Buscar «Mecánico»</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="buscar('xyz')">Buscar «xyz»</button>
+  </div>
+
+  <h6>Escritura <small class="text-muted">(último id creado: {{ ultimoId() ?? 'ninguno' }})</small></h6>
+  <div class="d-flex flex-wrap gap-2 mb-3">
+    <button type="button" class="btn btn-outline-success" (click)="crear()">Crear</button>
+    <button type="button" class="btn btn-outline-warning" (click)="actualizar()" [disabled]="ultimoId() === null">Actualizar último</button>
+    <button type="button" class="btn btn-outline-danger" (click)="borrar()" [disabled]="ultimoId() === null">Borrar último</button>
+  </div>
+
+  <h5>{{ titulo() }}</h5>
+  @if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  }
+  <pre class="bg-light border p-3">{{ resultado() | json }}</pre>
+</div>

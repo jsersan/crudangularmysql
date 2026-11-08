@@ -1,0 +1,95 @@
+<!-- src/app/components/productos-list/productos-list.component.html  ·  Versión final -->
+<div class="container mt-4">
+  <h2>Lista de Productos</h2>
+
+  <!-- Fila con el buscador y el botón de nuevo producto -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Buscar por nombre</mat-label>
+        <!-- [(ngModel)] requiere FormsModule; Enter lanza la búsqueda -->
+        <input matInput [(ngModel)]="nombreBusqueda" (keyup.enter)="buscarPorNombre()">
+        <!-- Solo mat-icon-button: con mat-button a la vez falla (NG0300 en el PDF, NG8023 al compilar en v22) -->
+        <button mat-icon-button matSuffix type="button" (click)="buscarPorNombre()" aria-label="Buscar">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <!-- Botón para abrir el formulario de nuevo producto -->
+    <div class="col-md-6 text-end">
+      <button matButton="elevated" color="primary" type="button" (click)="abrirFormulario()">
+        <mat-icon>add</mat-icon> Nuevo Producto
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabla con sombra (clase de Material) -->
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="paginaActual()" class="w-100">
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let producto">{{ producto.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <!-- Enlace a la página de detalle: /productos/1, /productos/2… -->
+        <td mat-cell *matCellDef="let producto">
+          <a [routerLink]="['/productos', producto.id]">{{ producto.nombre }}</a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="descripcion">
+        <th mat-header-cell *matHeaderCellDef>Descripción</th>
+        <td mat-cell *matCellDef="let producto">{{ producto.descripcion }}</td>
+      </ng-container>
+
+      <!-- Precio con el pipe currency: usa LOCALE_ID ('es') y DEFAULT_CURRENCY_CODE ('EUR') -->
+      <ng-container matColumnDef="precio">
+        <th mat-header-cell *matHeaderCellDef>Precio</th>
+        <td mat-cell *matCellDef="let producto">{{ producto.precio | currency }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="stock">
+        <th mat-header-cell *matHeaderCellDef>Stock</th>
+        <td mat-cell *matCellDef="let producto">{{ producto.stock }}</td>
+      </ng-container>
+
+      <!-- Acciones: editar y eliminar -->
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let producto">
+          <button mat-icon-button color="primary" type="button" (click)="abrirFormulario(producto)" aria-label="Editar">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" type="button" (click)="eliminarProducto(producto.id)" aria-label="Eliminar">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Fila de cabecera y filas de datos -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <!-- Fila que se muestra cuando no hay datos -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell text-center" [attr.colspan]="displayedColumns.length">No se encontraron productos</td>
+      </tr>
+    </table>
+
+    <!-- Paginador controlado por los signals del componente -->
+    <mat-paginator
+      [length]="productos().length"
+      [pageIndex]="pageIndex()"
+      [pageSize]="pageSize()"
+      [pageSizeOptions]="[5, 10, 25]"
+      (page)="cambiarPagina($event)"
+      showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</div>
+
+
